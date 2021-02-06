@@ -1,0 +1,50 @@
+본 강의 노트는 니꼬 airbnb 장고 #2part 의 동영상만을 참고함
+
+1. pipenv 가상환경
+
+pipenv --three    == 파이썬3로 가상환경을 만듦
+
+pipenv shell    == 가상환경안으로 들어옴 (버블안으로)
+
+pip install Django == 최신버전 장고 설치
+
+pip install Django==2.2.5    == 버전을 설정후 설치
+
+django-admin    ==  장고가 설치된 버블에 잘들어 왔을시 django 매뉴얼이 나열됨
+
+django-admin startproject config  == config 폴더를 생산 한다 ( 먼가더 중요한 이유가 있는듯)
+
+2. __init__.py 의 존재 이유
+
+새로운 폴더를 만들떄 항상 그안에 __init__.py 이 존재해야 한다. 왜냐하면
+그 폴더안에 다른 py파일을 다른 곳에 있는 파이썬 파일에 import 해서 사용할 수 있기 때문 연결 시켜준다
+
+3. settings.py 은 뭘까
+
+settings.py은 장고의 모든 기본 세팅에 대한 정보가 들어 있다 url도 많이 들어 있는데 
+장고사이트 안의 사용설명서 같은 느낌
+
+4. 장고 명령어 
+
+python manage.py runserver == 장고 서버를 실행함 (웹서버 실행)
+
+python manage.py createsuperuser == 관리자 계정을 생성 (관리자 패널 접속 가능)
+
+python manage.py migrate == 장고와 동일한 데이터 유형을 동기화 하기위해 데이터베이스를 업데이트
+추가 :  migrations은 이주시키다 라는 뜻 (sql와 연관성이 깊음)
+
+5. 장고 프로젝트 계획
+
+장고는 많은 어플리케이션 들의 집합들이다 어플리케이션은 config 폴더 안에 작게 많이 들어간다
+한가지 어플을 만들때는 한문장으로 설명해야한다(작게나누라는 뜻) 중간에 and 가 있어서는 안된다
+예:  이 어플은 메세지 보내기, 삭제하기, 저장하기 등만 있어야한다 and 리뷰 기능이 있다는 안된다.
+
+6. 장고 어플리케이션 명령어
+
+django-admin startapp conversations == conversations이라는 이름의 폴더를 만든다 
+(messages라고 하지 않은 이유는 settings에 이미 동일 이름이 존재하기때문이다. 이름을 만들때 settings에 들어가서 확인해보자)
+
+7. 니꼬의 경고
+
+django가 생성한 파일들의 이름을 절대로 바꿔서는 안된다 admin.py 같은 파일과 폴더 등등
+하지만 폴더안에 urls.py 같은 파일을 생성을 할수는 있다 (conifg 폴더의 urls.py에 import 한다)

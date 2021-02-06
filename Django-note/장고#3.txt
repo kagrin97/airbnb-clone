@@ -1,0 +1,43 @@
+장고#3 정리 노트
+
+1. users 창 상속 받기
+
+우리는 장고 users 창에 여러가지 기능을 추가하기위해서 
+from django.contrib.auth.models import AbstractUser
+를 User한테 상속을 받게하였다 class User(AbstractUser):
+
+2. settings와 users를 연결하기
+
+AUTH_USER_MODEL = 'users.User' 
+이 명령어는 settings와 users 어플리케이션을 연결하는 명령이다 뒤의 User은
+models.py의 User 클래스이다
+
+3. Dependency on app with no migrations: users 에러
+
+해당에러는 users에 migrations가 없다는 의미이다 해당 폴더에서 서버를 끈 상태에서
+python manage.py makemigrations == 만들기
+그리고 python manage.py migrate 데이터 베이스와 연동해주기
+
+4. admin패널에 새로운 필드 추가하기
+
+class User(AbstractUser):
+
+    bio = models.TextField(default="")
+
+이런식으로 클래스안에 TextField를 쓰면 텍스트를 쓸수있는 공간이 생성된다
+(적용하기 위해서는 migrations와 migrate를 실행 시켜야한다)
+
+5. gender 에 남성 여성 등등 을 설정하기 (form에 추가)
+
+GENDER_MALE = "male"
+    GENDER_FEMALE = "female"
+    GENDER_OTHER = "other"
+
+    GENDER_CHOICES = (
+        (GENDER_MALE, "Male"),         <--- 여기서 GENDER_MALE은 데이터베이스로 가고 
+        (GENDER_FEMALE, "Female"),  		"Male"은 사용자 한테 보여주는 패널이다
+        (GENDER_OTHER, "Other"),
+    )
+gender = models.CharField(choices=GENDER_CHOICES, max_length=10, null=True)
+
+위 식은 gender의 캐릭터 필드에 choices를 남성 여성 등등 으로 설정할수있다
