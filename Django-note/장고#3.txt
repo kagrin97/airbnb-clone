@@ -41,3 +41,32 @@ GENDER_MALE = "male"
 gender = models.CharField(choices=GENDER_CHOICES, max_length=10, null=True)
 
 위 식은 gender의 캐릭터 필드에 choices를 남성 여성 등등 으로 설정할수있다
+
+6. list_display 설정하기
+
+admin.py
+list_display = ("username", "gender", "langauge", "currency", "superhost")
+= 이렇게 설정하면 해당 필드의 값들을 불러와서 보여준다
+list_filter = ("langauge", "currency", "superhost",)
+= 필터를 적용시켜서 원하는 부분만 나열할수 있다
+
+7. user admin field에 새로운  field 를 추가하기
+
+ fieldsets = UserAdmin.fieldsets + (
+        (
+            "Custom Profile", 
+            {
+                "fields": (
+                    "avatar", 
+                    "gender", 
+                    "bio",
+                    "birthdate",
+                    "langauge",
+                    "currency",
+                    "superhost",
+                    )
+            },
+        ),
+)
+= 기존에있던 UserAdmin.fieldsets에 Custom Profile이라는 필드를 새로 생성하고 그안에
+avatar","gender",등등을 추가해준다
