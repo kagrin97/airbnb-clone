@@ -1,0 +1,45 @@
+장고 #6  ROOM ADMIN
+
+
+1. search bar 추가
+
+search_fields = ("=city", "^host__username",)
+= city를 검색하고 =는 정확하게 썻을 때만을 위한 옵션 ^는 앞에 옵션 (걍 6.0 영상을봐라)
+
+"host__superhost",
+= 는 같은 폴더안의 model에 host는 users.User을 가리키고 그안에 있는 superhost 를 가져온다
+
+2. ManyToMany패널에서 훨씬 보기 좋게 만들기
+
+filter_horizontal = (
+        "amenities",
+        "facilities",
+        "house_rules",
+        )
+= 하우스를 필터로 검색할수있고 todolist처럼 훨씬 보기가 편해진다
+
+3. fieldsets 접어서 가독성 높이기
+
+(
+            "More About the Space",
+            {
+                "classes": ("collapse",),
+                "fields": ("amenities", "facilities", "house_rules"),
+            },
+        ),
+= More About the Space라는 필드셋에 "classes": ("collapse",), 을 넣으면 hide, show 를 할수있다
+
+4. 자동으로 정렬 우선순위 매기기
+
+ordering = ("name", "price", "bedrooms")
+= 처음으로 name으로 정렬하고 그다음 price 순으로 정렬하고 우선수위를 가져온다
+
+5. list_display에 새로운 것을 추가하기
+
+list_display = (
+        "count_amenities",
+    )
+= 함수를 불러오기
+def count_amenities(self, obj):
+        return obj.amenities.count()
+= self 는 RoomAdmin이고 obj는 리스트의 row이다 count는 갯수를 세어 준다

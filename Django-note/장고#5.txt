@@ -1,0 +1,15 @@
+장고#5 Review
+
+1. 장고 relationship의 힘
+
+def __str__(self):
+        return f'{self.review} - {self.room}'
+= 파고 파고 들어가서 각 리뷰 제목을 {self.review} - {self.room} 로 출력 할수 있다
+= room을 쓰면 이름이 나오는 이유는 room의 __str__이 return slef.name 이기 떄문이다
+
+
+2. non-string 에러
+
+def __str__(self):
+        return str(self.created)
+= created는 정수형이기 때문에 str만 불러 올수있어서 str로 변환을 해준다
