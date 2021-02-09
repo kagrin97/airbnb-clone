@@ -1,0 +1,78 @@
+장고 #8
+
+
+1. 리뷰 평점을 구하고 reviews의 list_display에 나타내자 !
+
+def rating_average(self):
+        avg = (
+            self.accuracy
+            + self.communication
+            + self.cleanliness
+            + self.location
+            + self.check_in
+            + self.value
+        ) / 6
+        return round(avg, 2)
+= 리스트 평점을 구하는 함수로 models.py에 들어 있다(여러곳에서 쓰여야 해서 models에 넣는다)
+round함수는 몇번쨰 자리까지 보여주는 지를 결정해 준다
+
+2. reviews에 리뷰가 추가 될때마다 rooms의 전체 평점을 갱신해주자
+
+def total_rating(self):
+        all_reviews = self.reviews.all()
+        all_ratings = 0
+        for review in all_reviews:
+            all_ratings += review.rating_average()
+        if len(all_reviews) > 0:
+            return all_ratings / len(all_reviews)
+        else:
+            return 0
+= 리뷰가 추가되면 len의 길이가 1늘어나고 all_ratings에 평점이 더해진다
+만약 리뷰가 하나도 없다면 오류가 나서 if문을 써서 대처해 준다
+
+3. Reservation에서 현재 진행중에 있는지 아니면 끝났는지 추가하기
+
+def in_progress(self):
+        now = timezone.now().date()
+        return now > self.check_in and now < self.check_out
+in_progress.boolean = True
+    = 현재 시간을 구해주고 현재 시간이 check_in < now < check_out 라면 return
+	초기 값을 true 로 설정해줘야한다
+
+def is_finished(self):
+        now = timezone.now().date()
+        return now > self.check_out
+is_finished.boolean = True
+= 끝났을 경
+
+4. short_description 이 머지?
+
+count_rooms.short_description = "Number of Rooms"
+= 그냥 이름을 바꿔준다고 생각하면 된다
+
+5. photo 업로드 파일 경로 설정하기
+
+MEDIA_ROOT = os.path.join(BASE_DIR, "uploads")
+= settings.py 에 추가해 준다 BASE_DIR은 맨위에 있다(airbnb의 절대경로)
+
+6. ImageField를 각각 폴더마다 나눠서 저장해 주기
+
+file = models.ImageField(upload_to="room_photos")
+= uploads/room_photos에 file을 저장
+avatar = models.ImageField(upload_to="avatars", blank=True)
+= uploads/avatars에 file을 저장
+
+7. 라우터를 생성해서 url을 변경해보자
+
+settings.py
+MEDIA_URL = "/media/"
+= 새롭게 바뀔 url 을 만들어 주자 /가 앞에 붙으면 앞에 있는 url값을 날린다
+
+urls.py
+from django.conf import settings = settings 연결(form . import settings 는 안됨 약속임)
+from django.conf .urls.static import static = static 라이브러리 사용 (라우터를 만드는 듯)
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+= DEBUG는 true 일때 사용자한테 오류가 뜰때 정확한 오류를 출력해줌 false일떄는 404 같은 오류를 보여줌
+= static을 이용해서 url을 /media/폴더명 으로 바꿔줌
