@@ -76,3 +76,51 @@ if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 = DEBUG는 true 일때 사용자한테 오류가 뜰때 정확한 오류를 출력해줌 false일떄는 404 같은 오류를 보여줌
 = static을 이용해서 url을 /media/폴더명 으로 바꿔줌
+
+8. photo 어드민 패널에 사진을 작게 띄워 주자!
+
+from django.utils.html import mark_safe
+= 장고는 url같은 해킹 가능성이 있는 정보를 띄워주지 않는다 mark_safe는 띄워주게 한다 2.2.5ver
+rom django.utils.safestring import mark_safe
+= 3.1ver
+
+def get_thumbnail(self, obj):
+        return mark_safe(f'<img width="50px" src="{obj.file.url}" />')
+= url주소를 불러워서 img로 띄워준다
+
+9. host가 너무 많을때 스크롤로 고르지말고 검색해서 고르는 법!
+
+raw_id_fields = ("host",)
+= 호스트를 찾을때 검색해서 찾을수가 있다 (전에는 스크롤방식)
+
+10. rooms을 추가할때 rooms에 맞는 사진들을 설정에서 한번에 집어 넣는 방법!
+
+class PhotoInline(admin.TabularInline):
+
+    model = models.Photo
+
+inlines = (PhotoInline,)
+
+= 사진들을 넣는 class를 만들고 inlines로 추가 해준다
+
+11. super() 메소드에 대해서
+
+super().부모클래스의메소드()
+= super().는 부모 클래스의 메소드를 실행시켜주는 효과를 가지고 있다
+
+12. 도시 이름의 첫번쨰를 대문자로 바꿔보자
+
+	12.1. Model 에서 처리하기
+	- save함수를 override(덮어쓰기) 받아서 처리 (아래는 city의 첫글자를 대문자로 처리)
+
+	def save(self, *args, **kwargs):
+        		self.city = str.capitalize(self.city)
+       		 super().save(*args, **kwargs)
+
+	12.2. Admin에서 처리
+	- model에서 처리하는것과 차이점은 model의 save함수는 model의 데이터를 처리하는것만 가능
+	- admin의 save_model은 아래의 예처럼 request, obj, form, change의 객체 값을 사용가능
+
+	def save_model(self, request, obj, form, change):
+		로직이 들어가는 부분
+		super().save_model(request, obj, form, change)

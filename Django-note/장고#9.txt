@@ -1,0 +1,48 @@
+장고 #9
+9.0 영상은 이해가 잘안됨 (여러번 봐보셈)
+
+1. Amenity를 seed하기 (fake 데이터를 넣기)
+
+for a in amenities:
+            Amenity.objects.create(name=a)
+= amenities안에있는 가구 리스트를 Amenity에 오브젝트로 하나씩 만들기
+
+2. 가짜 user들 만들기 
+
+pipenv install django_seed
+from django_seed import Seed
+
+def add_arguments(self, parser):
+        parser.add_argument(
+            "--number", default=2, type=int, help="How many users you want to create"
+        )
+
+    def handle(self, *args, **options):
+        number = options.get("number")
+        seeder = Seed.seeder()
+        seeder.add_entity(User, number, {"is_staff": False, "is_superuser": False})
+        seeder.execute()
+        self.stdout.write(self.style.SUCCESS(f"{number} users created!"))
+= 커맨더를 만들고(--number)  seeder.add_entity(User, 생성할 개수, 커스텀 필드)
+
+3. 랜덤으로 방 만들기
+
+def handle(self, *args, **options):
+        number = options.get("number")
+        seeder = Seed.seeder()
+        all_users = user_models.User.objects.all()  # 모든 user를 넣는다(권장x)
+        room_types = room_models.RoomType.objects.all()
+        seeder.add_entity(
+            room_models.Room,  # 생성할 곳
+            number,
+            {
+                "name": lambda x: seeder.faker.address(),  #  이름을 주소로 나타나게함
+                "host": lambda x: random.choice(all_users), # host를 랜덤하게 선택
+                "room_type": lambda x: random.choice(room_types), 
+                "guests": lambda x: random.randint(1, 20),  # 게스트 수를 1~20까지 랜덤하게 선택
+                "price": lambda x: random.randint(1, 300),
+                "beds": lambda x: random.randint(1, 5),
+                "bedrooms": lambda x: random.randint(1, 5),
+                "baths": lambda x: random.randint(1, 5),
+            },
+        )
