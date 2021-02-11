@@ -1,0 +1,62 @@
+장고 #10 
+
+0. 기본 urls view 설정
+
+config/urls.py
+from django.urls import path, include
+urlpatterns = [
+    path("", include("core.urls", namespace="core")),
+= 10.0~2 영상을 그냥 보도록
+core/urls.py
+from django.urls import path
+from rooms import views as room_views
+
+app_name = "core"
+
+urlpatterns = [path("", room_views.all_rooms, name="home")]
+
+
+
+1. 장고 templates 폴더를 만들고 설정 하기
+
+settings.py
+'DIRS': [os.path.join(BASE_DIR, "templates")], -> (2.2.5)
+         Path("templates")  		       -> (3.1)
+= 장고한테 templates를 쓸 폴더를 지정해 줄수 있다
+
+2.  render의 context 기능 알아보기
+
+view.py
+def all_rooms(request):
+    now = datetime.now()
+    hungry = True
+    return render(request, "all_rooms.html", context={"now": now, "hungry": hungry})
+= render는 context를 써서 html에 변수를 사용할수 있게 해줄수 있다
+
+all_rooms.html
+<h6>
+{% if hungry %}
+I'm hungry
+{% else %}
+i'm okay
+{% endif %}
+</h6>
+=파이썬에서 if문을 쓰는방법이다 for문도 가능
+
+3. 템플릿을 쓰는법 (html끼리 상속을 받아서 나누고 쪼개서 만들자)
+
+templates/base.html
+	{% include "partials/header.html" %} = header.html을 따로만들어서 넣는다
+
+	{% block content %}{% endblock %} = 자식 하고 연락할 통로
+
+templates/rooms/home.html
+	{% extends "base.html" %} = 어떤 부모한테 상속 받은 것인지
+	{% block content %} = 부모하고 연락할 통로
+
+   		{% for room in 콘텍스  %}
+        			<h1>{{room.name}} / ${{room.price}}</h1>
+    		{% endfor %}
+
+
+	{% endblock content %}

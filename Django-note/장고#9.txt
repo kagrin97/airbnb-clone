@@ -46,3 +46,42 @@ def handle(self, *args, **options):
                 "baths": lambda x: random.randint(1, 5),
             },
         )
+
+4. 랜덤으로 방 만들기(사진도 랜덤으로 넣기)
+
+created_photos = seeder.execute() # 고유한 pk를 2차원 배열로 반환
+        created_clean = flatten(list(created_photos.values()))  # [[[12]]] 이상한모양을 정리 -> [12]
+        for pk in created_clean:
+            room = room_models.Room.objects.get(pk=pk) # 프라이머리 키로 room 찾기
+            for i in range(3, random.randint(10, 17)): # 몇개의 사진을 줄것 인지
+                room_models.Photo.objects.create(
+                    caption=seeder.faker.sentence(),
+                    room=room,
+                    file=f"room_photos/{random.randint(1, 31)}.webp",
+                ) = 사진을 만들고 룸을 만든다
+
+5. 랜덤 방에 amenities, facilities, rules 랜덤으로 넣기
+
+amenities = room_models.Amenity.objects.all()
+for a in amenities:
+                magic_number = random.randint(0, 15)
+                if magic_number % 2 == 0:
+                    room.amenities.add(a)
+= amenities 하나를 가져와서 50% 확률로 추가한다 (manytomany방식에서 쓰인다) 
+
+6. reservations 에 랜덤으로 날짜를 받기 (status도)
+
+from datetime import datetime, timedelta
+seeder.add_entity(
+            reservation_models.Reservation, number, {
+                "status": lambda x: random.choice(["pending", "confirmed", "canceled"]),
+                "guest": lambda x: random.choice(users),
+                "room": lambda x: random.choice(rooms),
+                "check_in": lambda x: datetime.now(),
+                "check_out": lambda x: datetime.now()
+                + timedelta(days=random.randint(3, 25)),
+                }
+        )
+= status에 랜덤으로 3가지중 하나를 넣는다, 
+= check_in은 지금 시간을 넣는다
+= check_out은 현재시간 + 랜덤(3, 25) 더한 값을 넣는다
