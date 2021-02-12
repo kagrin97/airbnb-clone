@@ -1,0 +1,36 @@
+장고 # 11
+https://ccbv.co.uk/projects/Django/2.2/django.views.generic.list/ListView/
+= 장고 리스트뷰 메소드의 정의를 설명해 놓은 사이트
+
+
+0. 수동으로 pagination 사용법은 11 영상을 봐라 
+
+1. 장고를 사용해 파지네이션 사용법
+urls.py
+urlpatterns = [path("", room_views.HomeView.as_view(), name="home")]
+= path는 오로지 url, 함수만 갖는데 HomeView는 클래스라서 클래스로부터
+함수를 가져와야 한다 그럴때 .as_view()를 쓰면된다
+
+rooms/views.py
+from django.utils import timezone
+from django.views.generic import ListView
+from . import models
+
+class HomeView(ListView):  # 상속 받는다
+
+    """ HomeView Definition """
+
+    model = models.Room # 이걸 써줘야 에러가 발생x
+    paginate_by = 10   	# 10개씩
+    paginate_orphans = 5 	# 5개 이하일때는 그전 페이지에 5개를 합쳐준다
+    ordering = "created" 	# 만들어진 순서로 정렬? 
+    context_object_name = "rooms"   # context_object_name을 rooms로 바꿈 (전에는 object_list였음)
+	
+    def get_context_data(self, **kwargs):		# 기능 추가 해주는 메소드를 작성
+        context = super().get_context_data(**kwargs)	# 상속을 받아야함
+        now = timezone.now()
+        context["now"] = now				# 부모 클래스한테 새로운 기능을 넣어줌
+        return context
+= 장고 기능을 사용하면 오브젝트를 모두 가져와서 선언을 하지 않아도  html에서 사용할수있고
+page_obj 로 페이지를 사용할수 있다
+= cbv는 기능을 추가해 줄수가 있다 cbv vs fbv로 해외에서 싸우기도 한다
