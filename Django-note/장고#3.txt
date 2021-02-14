@@ -29,7 +29,7 @@ class User(AbstractUser):
 
 5. gender 에 남성 여성 등등 을 설정하기 (form에 추가)
 
-GENDER_MALE = "male"
+    GENDER_MALE = "male"
     GENDER_FEMALE = "female"
     GENDER_OTHER = "other"
 

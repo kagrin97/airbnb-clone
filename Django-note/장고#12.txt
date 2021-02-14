@@ -1,0 +1,50 @@
+장고 # 12
+
+1. url에 프라이머리 키로 접속 가능하게하기 http://rooms/{pk}
+
+urlpatterns = [path("<int:pk>", views.room_detail, name="detail")]
+
+def room_detail(request, pk): # pk를 주어야한다
+    
+	return render(request, "rooms/detail.html")
+
+<a href="{% url "core:home" %}">Nbnb</a>
+= namespace = core, name = home
+<h3>
+        <a href="{% url "rooms:detail" room.pk %}">
+            {{room.name}} / ${{room.price}}
+        </a>
+    </h3>
+= 이것은 pk가 필요해서 pk를 알큐먼트로 넣어준다
+
+2. 404 found를 띄워주기
+
+from django.http import Http404
+except models.Room.DoesNotExist:
+        raise Http404()
+= except가 발생했을때 404페이지를 보여주는 방법이다 이걸 쓰는이유는 이방법을쓰면 실패한
+기록을 저장하지 않기 때문이다
+
+3. fbc -> cbv로 바꾸기
+
+urlpatterns = [path("<int:pk>", views.room_detail, name="detail")]
+urlpatterns = [path("<int:pk>", views.RoomDetail.as_view(), name="detail")]
+= room_detail이란 함수를 RoomDetail란 클래스로 as_view()로 한다
+from django.views.generic import ListView, DetailView
+
+def room_detail(request, pk):
+    try:
+        room = models.Room.objects.get(pk=pk)
+        return render(request, "rooms/detail.html", {"room": room})
+    except models.Room.DoesNotExist:
+        raise Http404()
+= fbv 방법
+class RoomDetail(DetailView):
+
+    """ RoomDetail Definition """
+
+    model = models.Room
+= cbv 방법
+== fbv는 코드를 보고 직관적으로 어떤 기능인지 알수가 있찌만 cbv는 간단한대신
+첨보는 사람은 이해하기가 어렵다
+
