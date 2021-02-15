@@ -101,4 +101,3 @@ class SearchView(View):
             form = forms.SearchForm()
 
         return render(request, "rooms/search.html", {"form": form})
-
