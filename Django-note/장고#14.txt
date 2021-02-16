@@ -1,0 +1,55 @@
+장고 #14
+
+1.
+
+{{form.as_p}}  = 한줄로 나오던 form이 여러줄로 나뉘어서 나오게함
+
+password = forms.CharField(widget=forms.PasswordInput) 
+= 패스워드를 입력할때 패스워드를 보이지 않게함 widget기능
+
+{% csrf_token %} = 다른사람이 request를 훔쳐서 사용하지 못하도록 토큰을 따로 생성해줌
+
+form = forms.LoginForm(request.POST)
+        if form.is_valid():
+            print(form.cleaned_data)
+= form 과 연결을 시키고 is_valid()는 LoginForm클래스에 에러가 없으면  ture를 출력함
+= cleaned_data는 데이터를 딕셔너리 형태로 보여줌
+= {'email': 'kagrin97@gmail.com', 'password': '123'}
+
+2. 이메일 패스워드 검사 메소드
+
+def clean(self):
+        email = self.cleaned_data.get("email")  = 이메일 정보면 뺴옴
+        password = self.cleaned_data.get("password")
+        try:
+            user = models.User.objects.get(email=email) = 이메일끼리 비교
+            if user.check_password(password): = 이메일과 비번 비교해서 맞으면
+                return self.cleaned_data = 클린데이터를 리턴해줌
+            else:
+                self.add_error("password", forms.ValidationError("Password is wrong"))
+        except models.User.DoesNotExist:  =  아예 틀렸으면 email 창위에 오류를 출력
+            self.add_error("email", forms.ValidationError("User does not exist"))
+
+3. 로그 아웃 함수 만들기
+
+def log_out(request):
+    logout(request)
+    return redirect(reverse("core:home"))
+= 로그 아웃 함수를 가져다 쓴다
+= redirect(reverse("core:home"))는 core:home(맨첨화면)으로 돌아간다는 뜻이다
+
+4. 페이지에서 로그인 로그 아웃 버튼눌러서 상호작용하기
+
+    {% if user.is_authenticated %}
+        <li><a href="{% url "users:logout" %}">Log out</a></li>
+    {% else %}
+        <li><a href="{% url "users:login" %}">Log in</a></li>
+    {% endif %}
+
+= 만약 user.is_authenticated 이 ture라면 Log out을 보여준다(로그인 된 상태)
+= authenticated(인증됨)
+
+4. 더 쉬운 방법
+
+더쉬운 방법은 14.5 영상을 보도록
+
