@@ -1,0 +1,77 @@
+장고 #16
+https://docs.djangoproject.com/en/3.1/topics/email/
+= 장고 send email 하는방법 도큐먼테이션
+
+
+1. mailgun.com 이용방법
+
+settings.py 
+EMAIL_HOST = "(mailgun.com -> sending -> doamin settings -> smtp credentials에)" 
+ EMAIL_PORT = ""
+EMAIL_HOST_USER = os.environ.get("MAILGUN_USERNAME")
+EMAIL_HOST_PASSWORD = os.environ.get("MAILGUN_PASSWORD")
+= smtp credentials에서 smtp settings에 호스트주소, 포트번호, 이메일 어드레스, 그리고 
+add new smtp user를 새로 만들면 비번을 준다 그걸 넣어주면 됨
+
+
+2. .env를 이용해서 코드를 불러오자
+
+pipenv install django-dotenv = env를 읽어오는 프로그램 설치
+
+manage.py
+import dotenv
+dotenv.read_dotenv()
+= 기본 액세스 설정
+
+.env 파일을 만들고 그안에 MAILGUN_USERNAME, MAILGUN_PASSWORD를 
+따로 변수를 만들어 그 값에 정보를 넣은다음에 
+위에 1번 에 나온것처럼 os.environ.get 해주면 된다
+.env에는 중요 정보가 있어서 git에 올라가지 않도록 .gitignore에 값을 넣어준다
+
+
+3. 이메일을 적용하는 방법은 영상을 다시보는 편이 나을것 같다 
+참고로 mailgun은 무작위로 스팸메일을 보내는 것을 방지하기위해 도메인을 사서 그것을
+이용해서 메일을 보내는것이 아니라면 메일들을 고객한테 보내도 스팸메일에 들어가게 되는것
+같다 
+
+
+models.py 
+email_verified = models.BooleanField(default=False)  = 이메일 확인 필드
+email_secret = models.CharField(max_length=20, default="", blank=True) = 이메일 비밀키 필드
+
+    def verify_email(self):
+        if self.email_verified is False:    = 이메일이 확인 안됬다면
+            secret = uuid.uuid4().hex[:20] = 무작위  숫자 uuid를 hex로 바꿔서 저장
+            self.email_secret = secret
+            html_message = render_to_string(
+                "emails/verify_email.html", {"secret": secret} = render는 response를 리턴 이것은 템플릿 렌더링한 문자열을 리턴
+            )
+            send_mail(
+                "Verify Airbnb Account",
+                strip_tags(html_message),
+                settings.EMAIL_FROM,
+                [self.email],
+                fail_silently=False,
+                html_message=html_message,   = send_mail함수로 인터넷 ㄱㄱ
+            )
+            self.save()
+        return
+
+path("verify/<str:key>", views.complete_verification, name="complete-verification"),
+= str:key =는 str값을 key로 이름을 설정한 것 (다른곳에서 쓰기위해)
+
+
+def complete_verification(request, key):   = 위의 key값 즉 str들임(비밀키)
+    try:
+        user = models.User.objects.get(email_secret=key) = 비밀키 저장
+        user.email_verified = True = 트루로 변경
+        user.email_secret = "" = 아무도 못보게 공백
+        user.save() = 진짜 저장
+        # to do: add succes message
+    except models.User.DoesNotExist:
+        # to do: add error message
+        pass
+    return redirect(reverse("core:home")) = 문제가 발생하면 메인으로 이동
+
+
+
