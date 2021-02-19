@@ -1,0 +1,20 @@
+장고 # 18
+
+1. 사진 파일을 가져와서 저장하는 방법
+
+사진 파일은 다른 nickname이나 다른 email 과 다르게 bullshit 파일이다 즉 0,1로 이루어짐
+그래서 가공하는 단계가 필요한데 
+
+from django.core.files.base import ContentFile
+photo_request = requests.get(profile_image)
+user.avatar.save(
+    f"{nickname}-avatar", ContentFile(photo_request.content)
+)
+= 이런식으로 url을 뽑은 다음에 ContentFile함수로 포장후 save해줘야한다
+avatar는 Filefield라서 save를 안해줘도 자동으로 저장에 된다고 한다
+
+2. 회원가입을 클래스로 받아와서 코드를 매우 짧게 해보자! UserCreationForm
+
+UserCreationForm 이라는 클래스를 받아서 email, password1, password2 같은
+것을 자동으로 할수도 있다 
+18.3 에 있다

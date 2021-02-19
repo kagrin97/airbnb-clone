@@ -9,6 +9,7 @@ black = "==20.8b1"
 pillow = "*"
 django-seed = "*"
 django-dotenv = "*"
+requests = "*"
 
 [dev-packages]
 flake8 = "*"
