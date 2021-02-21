@@ -1,0 +1,5 @@
+장고 #20
+
+1. styels.scss 에서 수정을 하면 꼭 npm run css를 해줘야 한다
+(transition이 먹히지 않으면 크롬 캐시를 지워 보자)
+

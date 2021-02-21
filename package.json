@@ -6,6 +6,9 @@
     "type": "git",
     "url": "git+https://github.com/kagrin97/airbnb-clone.git"
   },
+  "scripts": {
+    "css": "gulp"
+  },
   "bugs": {
     "url": "https://github.com/kagrin97/airbnb-clone/issues"
   },
