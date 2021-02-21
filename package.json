@@ -1,0 +1,27 @@
+{
+  "name": "airbnb-clone",
+  "version": "1.0.0",
+  "description": "��#\u0000 \u0000a\u0000i\u0000r\u0000b\u0000n\u0000b\u0000-\u0000c\u0000l\u0000o\u0000n\u0000e\u0000\r\u0000 \u0000\r\u0000 \u0000A\u0000i\u0000r\u0000b\u0000n\u0000b\u0000 \u0000u\u0000s\u0000i\u0000n\u0000g\u0000 \u0000P\u0000y\u0000t\u0000h\u0000o\u0000n\u0000,\u0000 \u0000D\u0000j\u0000a\u0000n\u0000g\u0000o\u0000,\u0000 \u0000T\u0000a\u0000i\u0000l\u0000w\u0000i\u0000n\u0000d\u0000,\u0000 \u0000a\u0000n\u0000d\u0000 \u0000m\u0000o\u0000r\u0000e\u0000\r\u0000 \u0000=�\u0018�=�\u0018�=�1�\r <���\r\u0000 \u0000",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kagrin97/airbnb-clone.git"
+  },
+  "bugs": {
+    "url": "https://github.com/kagrin97/airbnb-clone/issues"
+  },
+  "homepage": "https://github.com/kagrin97/airbnb-clone#readme",
+  "devDependencies": {
+    "gulp": "^4.0.2",
+    "gulp-csso": "^4.0.1",
+    "gulp-postcss": "^9.0.0",
+    "gulp-sass": "^4.1.0",
+    "node-sass": "^5.0.0",
+    "tailwindcss": "^2.0.3"
+  },
+  "dependencies": {
+    "autoprefixer": "^10.2.4",
+    "css": "^3.0.0",
+    "postcss": "^8.2.6",
+    "postcss-cli": "^8.3.1"
+  }
+}
