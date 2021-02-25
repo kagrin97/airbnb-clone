@@ -20,6 +20,10 @@ html {
     @apply text-center rounded-sm py-5 font-light text-lg w-full;
   }
 
+.btn-link {
+  @apply text-center py-3 rounded-lg font-light text-lg w-full text-white bg-red-500;
+}
+
 input{
     @apply rounded-sm py-5 font-light text-lg w-full text-left border border-gray-600 px-5 focus:outline-none focus:border-red-500 ;
 }
@@ -27,7 +31,7 @@ input{
 form {
     .input {
       @apply mb-3 w-full;
-      &.has_error {
+      &.has_success {
         input {
           @apply bg-red-200 border-gray-600;
           &:focus {
@@ -37,4 +41,40 @@ form {
       }
     }
   }
+
+@keyframes messageFadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(-50px);
+  }
+  5% {
+    opacity: 1;
+    transform: translateY(50px);
+  }
+  95% {
+    opacity: 1;
+    transform: translateY(50px);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-50px);
+  }
+}
+  
+  
+.message{
+  animation: messageFadeIn 5s ease-in-out forwards;
+  &.error{
+    @apply bg-red-600;
+  }
+  &.info{
+    @apply bg-blue-400;
+  }
+  &.success{
+    @apply bg-green-600;
+  }
+  &.warning{
+    @apply bg-yellow-600;
+  }
+}
 @tailwind utilities;
