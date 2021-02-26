@@ -24,8 +24,19 @@ html {
   @apply text-center py-3 rounded-lg font-light text-lg w-full text-white bg-red-500;
 }
 
-input{
-    @apply rounded-sm py-5 font-light text-lg w-full text-left border border-gray-600 px-5 focus:outline-none focus:border-red-500 ;
+input,
+textarea{
+    @apply rounded-sm py-5 font-light text-lg w-full text-left border border-gray-600 px-5 focus:outline-none focus:border-red-500;
+}
+
+textarea {
+  resize: none;
+  height: 100px;
+}
+
+select {
+  height: 50px;
+  font-weight: bold;
 }
 
 form {
