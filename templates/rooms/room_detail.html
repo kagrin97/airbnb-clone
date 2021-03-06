@@ -60,7 +60,7 @@
                 <h4 class="font-medium text-2xl mb-5">Reviews</h4>
                 <div class="flex items-center">
                     <div>
-                        <i class="fas fa-star text-teal-500"></i>
+                        <i class="fas fa-star text-green-500"></i>
                         <span class="font-bold text-xl">{{room.total_rating}}</span>
                     </div>
                     <div class="h-4 w-px bg-gray-400 mx-5"></div>
@@ -109,7 +109,7 @@
                                     {% elif is_booked_bool %}
                                         <span class="cal-number bg-gray-200 text-gray-400 line-through">{{day}}</span>
                                     {% else %}
-                                        <a href="{% url 'reservations:create' room.pk day.year day.month day.number %}" class="cal-number bg-gray-200 text-gray-700 hover:bg-teal-400 hover:text-white hover:font-medium">{{day}}</a>
+                                        <a href="{% url 'reservations:create' room.pk day.year day.month day.number %}" class="cal-number bg-gray-200 text-gray-700 hover:bg-green-400 hover:text-white hover:font-medium">{{day}}</a>
                                     {% endif %}
                                 {% else %}
                                   <span></span>
