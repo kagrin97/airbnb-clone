@@ -19,12 +19,11 @@ class HomeView(ListView):
     ordering = "created"
     context_object_name = "rooms"
 
-def room_detail(request, pk):
-    try:
-        room = models.Room.objects.get(pk=pk)
-        return render(request, "rooms/room_detail.html", {"room": room})
-    except models.Room.DoesNotExist:
-        raise Http404()
+class RoomDetail(DetailView):
+
+    """ RoomDetail Definition """
+
+    model = models.Room
 
 class SearchView(View):
 
